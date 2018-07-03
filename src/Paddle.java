@@ -6,7 +6,7 @@ public class Paddle {
 	// Image variables
 	private final String path = "graphics/paddle_md.png";
 	private final URL url = getClass().getResource(path);
-	private Image image = new Image(url.toString());
+	private Image image;
 	
 	// Game Variables
 	private final int PADDLE_WIDTH = 112;
@@ -18,6 +18,10 @@ public class Paddle {
 	public Paddle() {
 		locx = PADDLE_MAX_X / 2;
 		locy = PADDLE_Y;
+	}
+	
+	public void init() {
+		image = new Image(url.toString());
 	}
 	
 	public void move(int direction) {

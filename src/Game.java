@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
 import javafx.application.Application;
 
 public class Game {
@@ -9,16 +13,27 @@ public class Game {
 	public static final int LEVEL_HEIGHT = 9;
 	
 	// Game Variables
+	public static GameState gmState;
 	public static Block[] blocks;
 	public static Block[][] level;
 	public static Paddle paddle;
 	public static Ball ball;
-	public static boolean isReady;
+	public String levelCounter;
+	
+	public enum GameState {
+		INITIALIZED,	// The initial state of the game, merely created
+		LOADING, 		// The game objects and level are being loaded
+		READY, 			// The game objects and level are finished loading
+		PLAYING, 		// The game is actively being played, no win or loss
+		PAUSED, 		// The game is inactive, still no win or loss
+		WIN, 			// The level and or game has been completed
+		GAMEOVER, 		// The player has lost the game
+		EXIT			// The application is closing
+	}
 	
 	public Game(String[] args) {
-		isReady = false;
-		GameLoop gameloop = new GameLoop();
-		Thread gamethread = new Thread(gameloop);
+		gmState = GameState.INITIALIZED;
+		Thread gamethread = new Thread( new GameLoop() );
 		gamethread.start();
 		Application.launch(GUI.class, args);
 	}
@@ -27,45 +42,82 @@ public class Game {
 		new Game(args);
 	}
 	
+	/*
+	 * This class handles all of the game logic.
+	 */
 	private class GameLoop implements Runnable{
 		
 		public void run() {
-			gameInit();
+			while(true) {
+				switch(gmState) {
+					case INITIALIZED:
+						gameInit();
+						break;
+					case LOADING:
+						loadLevel(levelCounter);
+						gmState = GameState.READY;
+						break;
+					case READY:
+						break;
+					case PLAYING:
+						break;
+					case PAUSED:
+						break;
+					case WIN:
+						levelCounter = String.valueOf((Integer.parseInt(levelCounter) + 1));
+						gmState = GameState.LOADING;
+						break;
+					case GAMEOVER:
+						break;
+					case EXIT:
+						System.exit(0);
+						break;
+				}
+				
+				try {
+					Thread.yield();
+				} catch (Exception e) {
+					System.out.println("Exception in GameLoop.run :\n"  + e.getMessage());
+				}
+			}
 		}
 		
 		public void gameInit() {
-			paddle = new Paddle();
-			ball = new Ball();
-			blocks = new Block[] {
-					new Block("Red", 1),
-					new Block("Yellow", 2),
-					new Block("Purple", 3),
-					new Block("Blue", 4),
-					new Block("Green", 5),
-					new Block("Rock", -1)
-			};
-			
-			//loadLevel(1);
-			isReady = true;
+			if(GUI.gcState == GUI.GraphicsState.READY) {
+				gmState = GameState.LOADING;
+				levelCounter = "01";
+				
+				Game.paddle = new Paddle();
+				Game.ball = new Ball();
+				Game.blocks = new Block[] {
+						new Block(1),
+						new Block(2),
+						new Block(3),
+						new Block(4),
+						new Block(5),
+						new Block(-1)
+				};
+				
+			}
 		}
-		
+
+		/*
+		 * Read from file to get level information
+		 */
+		public void loadLevel(String level) {
+			String levelPath = "src/levels/lv" + level + ".txt";
+			try {
+				File file = new File(levelPath);
+				BufferedReader bfr = new BufferedReader( new FileReader(file) );
+				String input;
+				
+				while( (input = bfr.readLine()) != null) {
+					System.out.println(input);
+				}
+				
+			} catch (Exception e) {
+				System.err.println("Error in loadLevel: \n" + e.getMessage());
+			}
+		}
 	}
-	
-	/*
-	 * Read from file to get level information
-	 */
-	public static void loadLevel(int level) {
-		String levelPath = "levels/lv";
-		if(level < 10) {
-			levelPath += "0";
-		}
-		levelPath += level + ".txt";
-		
-		try {
-			
-		} catch (Exception e) {
-			System.err.println("Error in loadLevel: \n" + e.getMessage());
-		}
-	}
-	
 }

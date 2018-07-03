@@ -16,9 +16,15 @@ public class GUI extends Application{
 	private Image background = new Image(url.toString());
 	
 	// GUI variables
+	public static GraphicsState gcState;
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private StackPane root;
+	
+	public enum GraphicsState {
+		INITIALIZED, 	// The initial state of the GUI, merely created
+		READY			// The GUI is ready for use
+	}
 	
 	public void start(Stage stage) {
 		guiInit();
@@ -36,6 +42,7 @@ public class GUI extends Application{
 	 * loadGraphics method.
 	 */
 	public void guiInit() {
+		gcState = GraphicsState.INITIALIZED;
 		canvas = new Canvas(Game.CANVAS_WIDTH, Game.CANVAS_HEIGHT);
 		gc = canvas.getGraphicsContext2D();
 	}
@@ -63,7 +70,8 @@ public class GUI extends Application{
 					break;
 			}
 		});
-		
+
+		gcState = GraphicsState.READY;
 		stage.setScene(scene);
 		stage.show();
 	}
@@ -72,9 +80,11 @@ public class GUI extends Application{
 	 * Paints the images on the screen
 	 */
 	public void paintGame() {
-		if(Game.isReady) {
-			gc.clearRect(0, 0, Game.CANVAS_WIDTH, Game.CANVAS_HEIGHT);
-			gc.drawImage(background, 0, 0);
+		gc.clearRect(0, 0, Game.CANVAS_WIDTH, Game.CANVAS_HEIGHT);
+		gc.drawImage(background, 0, 0);
+		
+		// Only draw the game images when the game is ready to be played
+		if(Game.gmState == Game.GameState.PLAYING) {
 			gc.drawImage(Game.paddle.getImage(), Game.paddle.getLocX(), Game.paddle.getLocY());
 			gc.drawImage(Game.ball.getImage(), Game.ball.getLocX(), Game.ball.getLocY());
 			for(int i = 0; i < Game.LEVEL_WIDTH; i++) {
@@ -87,6 +97,10 @@ public class GUI extends Application{
 				}
 			}
 		}
+	}
+	
+	public void stop() {
+		Game.gmState = Game.GameState.EXIT;
 	}
 	
 }

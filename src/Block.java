@@ -18,24 +18,24 @@ public class Block {
 	private boolean isActive;
 	private Image image;
 	
-	public Block(String color, int hp) {
-		switch(color) {
-			case "Blue":
-				this.url = getClass().getResource(bluPath);
-				break;
-			case "Green":
-				this.url = getClass().getResource(grnPath);
-				break;
-			case "Purple":
-				this.url = getClass().getResource(prpPath);
-				break;
-			case "Red":
+	public Block(int hp) {
+		switch(hp) {
+			case 1:
 				this.url = getClass().getResource(redPath);
 				break;
-			case "Yellow":
+			case 2:
 				this.url = getClass().getResource(ylwPath);
 				break;
-			case "Rock":
+			case 3:
+				this.url = getClass().getResource(prpPath);
+				break;
+			case 4:
+				this.url = getClass().getResource(bluPath);
+				break;
+			case 5:
+				this.url = getClass().getResource(grnPath);
+				break;
+			case -1:
 				this.url = getClass().getResource(rckPath);
 				break;
 			default:
@@ -45,6 +45,10 @@ public class Block {
 		
 		this.image = new Image(url.toString());
 		this.hp = hp;
+	}
+	
+	public void init() {
+		this.image = new Image(url.toString());
 	}
 	
 	public int getLocX() {

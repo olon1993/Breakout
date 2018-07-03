@@ -6,7 +6,7 @@ public class Ball {
 	// Image Variables
 	private final String path = "graphics/ball_sm.png";
 	private final URL url = getClass().getResource(path);
-	private Image image = new Image(url.toString());
+	private Image image;
 	
 	// Game Variables
 	private final int BALL_WIDTH = 16;
@@ -18,6 +18,10 @@ public class Ball {
 	
 	public Ball() {
 		
+	}
+	
+	public void init() {
+		image = new Image(url.toString());
 	}
 	
 	public int getLocX() {
