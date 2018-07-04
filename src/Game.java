@@ -79,7 +79,7 @@ public class Game {
 				}
 				
 				try {
-					Thread.yield();
+					Thread.sleep(60);
 				} catch (Exception e) {
 					System.out.println("Exception in GameLoop.run :\n"  + e.getMessage());
 				}

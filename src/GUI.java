@@ -46,7 +46,8 @@ public class GUI extends Application{
 		
 		// Only draw the game images when the game is ready to be played
 		if(Game.gmState == Game.GameState.READY || 
-		   Game.gmState == Game.GameState.PLAYING) {
+		   Game.gmState == Game.GameState.PLAYING ||
+		   Game.gmState == Game.GameState.PAUSED) {
 			gc.drawImage(Game.paddle.getImage(), Game.paddle.getLocX(), Game.paddle.getLocY());
 			gc.drawImage(Game.ball.getImage(), Game.ball.getLocX(), Game.ball.getLocY());
 			for( int i = 0; i < Game.activeBlocks.size(); i++ ) {
@@ -88,11 +89,30 @@ public class GUI extends Application{
 		Scene scene = new Scene(root);
 		scene.setOnKeyPressed(e -> {
 			switch(e.getCode()) {
+				case SPACE:
+					if(Game.gmState == Game.GameState.READY ||
+					   Game.gmState == Game.GameState.PLAYING) {
+						Game.gmState = Game.GameState.PAUSED;
+						System.out.println("PAUSED");
+					} else if(Game.gmState == Game.GameState.PAUSED) {
+						Game.gmState = Game.GameState.PLAYING;
+						System.out.println("PLAYING");
+					}
+					break;
+				case UP:
+					if(Game.gmState != Game.GameState.PAUSED) {
+						Game.ball.launch();
+					}
+					break;
 				case LEFT:
-					Game.paddle.move(-1);
+					if(Game.gmState != Game.GameState.PAUSED) {
+						Game.paddle.move(-1);
+					}
 					break;
 				case RIGHT:
-					Game.paddle.move(1);
+					if(Game.gmState != Game.GameState.PAUSED) {
+						Game.paddle.move(1);
+					}
 					break;
 				default:
 					break;

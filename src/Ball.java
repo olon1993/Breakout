@@ -1,4 +1,5 @@
 import java.net.URL;
+import java.util.Random;
 import javafx.scene.image.Image;
 
 public class Ball {
@@ -13,19 +14,40 @@ public class Ball {
 	private final int BALL_HEIGHT = 16;
 	private final int BALL_MAX_X = Game.CANVAS_WIDTH - BALL_WIDTH;
 	private final int BALL_MAX_Y = Game.CANVAS_HEIGHT + BALL_HEIGHT;
-	private final int BALL_SPEED = 5;
+	private final int BALL_INIT_Y = 384;
+	private final int BALL_SPEED = 11;
 	private int locx, boundX,	// Represents the left and right bounds of the ball respectively
 				locy, boundY, 	// Represents the top and bottom bounds of the ball respectively
 				directX,		// Either 1 or -1 to represent directional movement on the x plane
 				directY;		// Either 1 or -1 to represent directional movement on the y plane
 	
+	// Utility Variables
+	private Random random;
+	
 	public Ball() {
-		
+		random = new Random();
+		this.locx = BALL_MAX_X / 2;
+		this.locy = BALL_INIT_Y;
+	}
+	
+	public void launch() {
+		if(Game.gmState == Game.GameState.READY) {
+			directY = -1;
+			if(random.nextBoolean()) {
+				directX = 1;
+			} else {
+				directX = -1;
+			}
+			Game.gmState = Game.GameState.PLAYING;
+		}
 	}
 	
 	public void move() {
-		this.locx += directX * BALL_SPEED;
-		this.locy += directY * BALL_SPEED;
+		int newLocX = this.locx + directX * BALL_SPEED;
+		int newLocY = this.locy + directY * BALL_SPEED;
+		
+		setLocX(newLocX);
+		setLocY(newLocY);
 	}
 	
 	public void detectCollision() {
