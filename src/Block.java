@@ -14,42 +14,69 @@ public class Block {
 	private URL url;
 	
 	// Game Variables
+	public static final int BLOCK_WIDTH = 32;
+	public static final int BLOCK_HEIGHT = 32;
 	private int locx, locy, hp;
 	private boolean isActive;
 	private Image image;
 	
-	public Block(int hp) {
+	public Block(int hp, int locx, int locy) {
 		switch(hp) {
+			case 0:
+				this.isActive = false;
+				break;
 			case 1:
+				this.isActive = true;
 				this.url = getClass().getResource(redPath);
+				this.image = new Image(url.toString());
 				break;
 			case 2:
+				this.isActive = true;
 				this.url = getClass().getResource(ylwPath);
+				this.image = new Image(url.toString());
 				break;
 			case 3:
+				this.isActive = true;
 				this.url = getClass().getResource(prpPath);
+				this.image = new Image(url.toString());
 				break;
 			case 4:
+				this.isActive = true;
 				this.url = getClass().getResource(bluPath);
+				this.image = new Image(url.toString());
 				break;
 			case 5:
+				this.isActive = true;
 				this.url = getClass().getResource(grnPath);
+				this.image = new Image(url.toString());
 				break;
 			case -1:
+				this.isActive = true;
 				this.url = getClass().getResource(rckPath);
+				this.image = new Image(url.toString());
 				break;
 			default:
+				this.isActive = true;
 				this.url = getClass().getResource(rckPath);
+				this.image = new Image(url.toString());
 				break;
 		}
 		
-		this.image = new Image(url.toString());
 		this.hp = hp;
+		this.locx = locx * BLOCK_WIDTH + BLOCK_WIDTH;
+		this.locy = locy * BLOCK_HEIGHT + BLOCK_HEIGHT;
 	}
 	
-	public void init() {
-		this.image = new Image(url.toString());
+	public void hit() {
+		this.hp -= 1;
+		if(this.hp == 0) {
+			this.isActive = false;
+		}
 	}
+	
+	////////////////////////////////////////////////////////////////////
+	// 						 GETTERS / SETTERS 						  //
+	////////////////////////////////////////////////////////////////////
 	
 	public int getLocX() {
 		return this.locx;

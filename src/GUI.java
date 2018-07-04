@@ -10,12 +10,12 @@ import java.net.URL;
 
 public class GUI extends Application{
 	
-	// Image variables
+	// Image Variables
 	private final String path = "graphics/breakout_bg.png";
 	private final URL url = getClass().getResource(path);
 	private Image background = new Image(url.toString());
 	
-	// GUI variables
+	// GUI Variables
 	public static GraphicsState gcState;
 	private Canvas canvas;
 	private GraphicsContext gc;
@@ -36,6 +36,34 @@ public class GUI extends Application{
 				}
 		}.start();
 	}
+	
+	/*
+	 * Paints the images on the screen
+	 */
+	public void paintGame() {
+		gc.clearRect(0, 0, Game.CANVAS_WIDTH, Game.CANVAS_HEIGHT);
+		gc.drawImage(background, 0, 0);
+		
+		// Only draw the game images when the game is ready to be played
+		if(Game.gmState == Game.GameState.READY || 
+		   Game.gmState == Game.GameState.PLAYING) {
+			gc.drawImage(Game.paddle.getImage(), Game.paddle.getLocX(), Game.paddle.getLocY());
+			gc.drawImage(Game.ball.getImage(), Game.ball.getLocX(), Game.ball.getLocY());
+			for( int i = 0; i < Game.activeBlocks.size(); i++ ) {
+				gc.drawImage(Game.activeBlocks.get(i).getImage(), 
+							 Game.activeBlocks.get(i).getLocX(), 
+							 Game.activeBlocks.get(i).getLocY());
+			}
+		}
+	}
+	
+	public void stop() {
+		Game.gmState = Game.GameState.EXIT;
+	}
+	
+	////////////////////////////////////////////////////////////////////
+	// 								INIT 							  //
+	////////////////////////////////////////////////////////////////////
 	
 	/*
 	 * Constructor that prepares the GUI for use and calls the
@@ -75,32 +103,4 @@ public class GUI extends Application{
 		stage.setScene(scene);
 		stage.show();
 	}
-	
-	/*
-	 * Paints the images on the screen
-	 */
-	public void paintGame() {
-		gc.clearRect(0, 0, Game.CANVAS_WIDTH, Game.CANVAS_HEIGHT);
-		gc.drawImage(background, 0, 0);
-		
-		// Only draw the game images when the game is ready to be played
-		if(Game.gmState == Game.GameState.PLAYING) {
-			gc.drawImage(Game.paddle.getImage(), Game.paddle.getLocX(), Game.paddle.getLocY());
-			gc.drawImage(Game.ball.getImage(), Game.ball.getLocX(), Game.ball.getLocY());
-			for(int i = 0; i < Game.LEVEL_WIDTH; i++) {
-				for( int j = 0; j < Game.LEVEL_HEIGHT; j++) {
-					if(Game.level[i][j].getIsActive()) {
-						gc.drawImage(Game.level[i][j].getImage(), 
-									 Game.level[i][j].getLocX() * 32 + 32, 
-									 Game.level[i][j].getLocY() * 32 + 32);
-					}
-				}
-			}
-		}
-	}
-	
-	public void stop() {
-		Game.gmState = Game.GameState.EXIT;
-	}
-	
 }
