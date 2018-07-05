@@ -106,13 +106,27 @@ public class GUI extends Application{
 					break;
 				case LEFT:
 					if(Game.gmState != Game.GameState.PAUSED) {
-						Game.paddle.move(-1);
+						Game.paddle.setDirection(-1);
 					}
 					break;
 				case RIGHT:
 					if(Game.gmState != Game.GameState.PAUSED) {
-						Game.paddle.move(1);
+						Game.paddle.setDirection(1);
 					}
+					break;
+				default:
+					break;
+			}
+		});
+		
+		// Used to detect when the paddle should stop moving
+		scene.setOnKeyReleased(e -> {
+			switch (e.getCode()) {
+				case LEFT:
+					Game.paddle.setDirection(0);
+					break;
+				case RIGHT:
+					Game.paddle.setDirection(0);
 					break;
 				default:
 					break;

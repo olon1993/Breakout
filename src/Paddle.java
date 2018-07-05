@@ -10,17 +10,18 @@ public class Paddle {
 	
 	// Game Variables
 	private final int PADDLE_WIDTH = 112;
+	private final int PADDLE_HEIGHT = 24;
 	private final int PADDLE_SPEED = 16;
 	private final int PADDLE_Y = 400;
 	private final int PADDLE_MAX_X = Game.CANVAS_WIDTH - PADDLE_WIDTH;
-	private int locx, locy;
+	private int locx, locy, direction;
 	
 	public Paddle() {
 		locx = PADDLE_MAX_X / 2;
 		locy = PADDLE_Y;
 	}
 	
-	public void move(int direction) {
+	public void move() {
 		locx += PADDLE_SPEED * direction;
 		if(locx < 0) {
 			locx = 0;
@@ -41,8 +42,20 @@ public class Paddle {
 		return this.locy;
 	}
 	
+	public int getPaddleWidth() {
+		return PADDLE_WIDTH;
+	}
+	
+	public int getPaddleHeight() {
+		return this.PADDLE_HEIGHT;
+	}
+	
 	public Image getImage() {
 		return this.image;
+	}
+	
+	public void setDirection(int direction) {
+		this.direction = direction;
 	}
 	
 }

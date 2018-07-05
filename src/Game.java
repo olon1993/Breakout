@@ -63,7 +63,9 @@ public class Game {
 					case READY:
 						break;
 					case PLAYING:
+						paddle.move();
 						ball.move();
+						ball.detectCollision();
 						break;
 					case PAUSED:
 						break;
@@ -123,6 +125,13 @@ public class Game {
 			} catch (Exception e) {
 				System.err.println("Error in loadLevel: \n" + e.getMessage());
 			}
+		}
+		
+		public void checkWin() {
+			if(activeBlocks.isEmpty()) {
+				gmState = GameState.WIN;
+			}
+			
 		}
 		
 	////////////////////////////////////////////////////////////////////
