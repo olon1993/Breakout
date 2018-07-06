@@ -4,16 +4,15 @@ A clone of the popular Breakout game.
 Features to Add:
 
 1) More dynamic reflection angle
-2) Score/Points
-3) Credits Screen
-4) Menu with Play/High Score Board/Options/Credits buttons
-5) High Score Board Screen
-6) Options Screen
-7) Player "Lives"
+2) Credits Screen
+3) Menu with Play/High Score Board/Options/Credits buttons
+4) High Score Board Screen
+5) Options Screen
+6) Player "Lives"
 
 Version History
 
-V0.7) The game now has a second level, background music, and sound effects!
+V0.7) The game now has a second level, background music, sound effects, and score!
 
 V0.6) The game works on a very basic level. There is only one level in the game and the ball only reflects at a 90 degree angle.
 
