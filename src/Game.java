@@ -13,6 +13,7 @@ public class Game {
 	public static final int CANVAS_HEIGHT = 480;
 	public static final int LEVEL_WIDTH = 18;
 	public static final int LEVEL_HEIGHT = 9;
+	public static final int POINTS_PER_HIT = 10;
 	public static boolean isSounding = true;
 	
 	// Game Variables
@@ -23,6 +24,7 @@ public class Game {
 	public static Ball ball;
 	public static String levelName;
 	public static String levelTitle;
+	public static int score;
 	public String levelCounter;
 	
 	// Sound Variables
@@ -77,6 +79,7 @@ public class Game {
 						ball.move();
 						if(ball.detectCollision()) {
 							hitSound.play();
+							score += POINTS_PER_HIT;
 							checkWin();
 						}
 						break;
@@ -161,6 +164,7 @@ public class Game {
 				levelCounter = "1";
 				level = new Block[LEVEL_HEIGHT][LEVEL_WIDTH];
 				activeBlocks = new ArrayList<Block>();
+				score = 0;
 				
 				URL url = getClass().getResource(backgroundMusicPath);
 				backgroundMusic = new AudioClip(url.toString());

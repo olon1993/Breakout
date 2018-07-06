@@ -1,0 +1,13 @@
+Production/Programming/Design:
+Scott Batey
+
+Graphics:
+OpenGameArt.org
+"breakout_sprites(no shadow).png"
+Marcus
+Scribe
+
+Music:
+FreeSound.org
+"Arcade Music Loop" => Joshuaempyre
+"PongBlipF4" => NoiseCollector

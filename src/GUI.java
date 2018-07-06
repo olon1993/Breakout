@@ -51,6 +51,7 @@ public class GUI extends Application{
 		   Game.gmState == Game.GameState.PAUSED) {
 			gc.fillText(Game.levelName, 10, 15);
 			gc.fillText(Game.levelTitle, 10, 30);
+			gc.fillText("Score: " + Game.score, Game.CANVAS_WIDTH - 70, 15);
 			gc.drawImage(Game.paddle.getImage(), Game.paddle.getLocX(), Game.paddle.getLocY());
 			gc.drawImage(Game.ball.getImage(), Game.ball.getLocX(), Game.ball.getLocY());
 			for( int i = 0; i < Game.activeBlocks.size(); i++ ) {
