@@ -73,7 +73,12 @@ public class Ball {
 			directY = 1;
 			return true;
 		} else if(this.locy == BALL_MAX_Y) {
-			Game.gmState = Game.GameState.GAMEOVER;
+			Game.livesRemaining -= 1;
+			if(Game.livesRemaining == 0) {
+				Game.gmState = Game.GameState.GAMEOVER;
+			} else {
+				Game.gmState = Game.GameState.LOSE;
+			}
 		}
 		
 		// Check if the ball hit the paddle and reverse direction if it did

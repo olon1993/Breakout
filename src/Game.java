@@ -13,11 +13,15 @@ public class Game {
 	public static final int CANVAS_HEIGHT = 480;
 	public static final int LEVEL_WIDTH = 18;
 	public static final int LEVEL_HEIGHT = 9;
+	public static final int SCORETEXT_X = 570;
+	public static final int LIVESTEXT_X = 300;
 	public static final int POINTS_PER_HIT = 10;
-	public static boolean isSounding = true;
+	public static final int INITIAL_LIVES = 3;
+	public static final int SCORE_PER_LIFE = 3000;
 	
 	// Game Variables
 	public static GameState gmState;
+	public static GameState prePausedState;
 	public static ArrayList<Block> activeBlocks;
 	public static Block[][] level;
 	public static Paddle paddle;
@@ -25,13 +29,21 @@ public class Game {
 	public static String levelName;
 	public static String levelTitle;
 	public static int score;
+	public static int livesRemaining;
+	public int nextLifeScore;
 	public String levelCounter;
 	
 	// Sound Variables
 	public String backgroundMusicPath = "audio/background_music.wav";
 	public String hitSoundPath = "audio/blip.wav";
+	public String oneupSoundPath = "audio/oneup.wav";
+	public String lifelostPath = "audio/lifelost.wav";
+	public String gameoverPath = "audio/gameover.wav";
 	public AudioClip backgroundMusic;
 	public AudioClip hitSound;
+	public AudioClip oneup;
+	public AudioClip lifelost;
+	public AudioClip gameover;
 	
 	public enum GameState {
 		INITIALIZED,	// The initial state of the game, merely created
@@ -40,7 +52,9 @@ public class Game {
 		PLAYING, 		// The game is actively being played, no win or loss
 		PAUSED, 		// The game is inactive, still no win or loss
 		WIN, 			// The level and or game has been completed
+		LOSE,			// the player has lost a life
 		GAMEOVER, 		// The player has lost the game
+		RECAP,			// Post game over, scores are recorded
 		EXIT			// The application is closing
 	}
 	
@@ -66,31 +80,63 @@ public class Game {
 					case INITIALIZED:
 						gameInit();
 						break;
+						
 					case LOADING:
 						loadLevel(levelCounter);
 						gmState = GameState.READY;
 						break;
+						
 					case READY:
 						paddle.init();
 						ball.init();
 						break;
+						
 					case PLAYING:
 						paddle.move();
 						ball.move();
+						
+						// If there was a collision add points to score
 						if(ball.detectCollision()) {
-							hitSound.play();
 							score += POINTS_PER_HIT;
+							
+							// If score is above the score required to gain
+							// a new life then the player gets a new life
+							// and the score required to gain a new life 
+							// increases
+							if(score > nextLifeScore * SCORE_PER_LIFE) {
+								livesRemaining += 1;
+								nextLifeScore++;
+								oneup.play();
+							}
+							
+							hitSound.play();
 							checkWin();
 						}
 						break;
+						
 					case PAUSED:
 						break;
+						
 					case WIN:
+						activeBlocks.clear();
 						levelCounter = String.valueOf((Integer.parseInt(levelCounter) + 1));
 						gmState = GameState.LOADING;
 						break;
-					case GAMEOVER:
+						
+					case LOSE:
+						lifelost.play();
+						gmState = GameState.READY;
 						break;
+						
+					case GAMEOVER:
+						backgroundMusic.stop();
+						gameover.play();
+						gmState = GameState.RECAP;
+						break;
+						
+					case RECAP:
+						break;
+						
 					case EXIT:
 						System.exit(0);
 						break;
@@ -148,8 +194,23 @@ public class Game {
 		}
 		
 		public void checkWin() {
+			
+			// Win if all the blocks have been broken
 			if(activeBlocks.isEmpty()) {
 				gmState = GameState.WIN;
+			} else {
+				
+				// Win if all remaining blocks are stone blocks and
+				// thereby unbreakable
+				boolean allStone = true;
+				for(int i = 0; i < activeBlocks.size(); i++) {
+					if(activeBlocks.get(i).getHP() > 0) {
+						allStone = false;
+					}
+				}
+				if(allStone) {
+					gmState = GameState.WIN;
+				}
 			}
 			
 		}
@@ -165,6 +226,8 @@ public class Game {
 				level = new Block[LEVEL_HEIGHT][LEVEL_WIDTH];
 				activeBlocks = new ArrayList<Block>();
 				score = 0;
+				livesRemaining = INITIAL_LIVES;
+				nextLifeScore = 1;
 				
 				URL url = getClass().getResource(backgroundMusicPath);
 				backgroundMusic = new AudioClip(url.toString());
@@ -173,6 +236,15 @@ public class Game {
 				
 				url = getClass().getResource(hitSoundPath);
 				hitSound = new AudioClip(url.toString());
+				
+				url = getClass().getResource(oneupSoundPath);
+				oneup = new AudioClip(url.toString());
+				
+				url = getClass().getResource(lifelostPath);
+				lifelost = new AudioClip(url.toString());
+				
+				url = getClass().getResource(gameoverPath);
+				gameover = new AudioClip(url.toString());
 				
 				Game.paddle = new Paddle();
 				Game.ball = new Ball();

@@ -51,7 +51,8 @@ public class GUI extends Application{
 		   Game.gmState == Game.GameState.PAUSED) {
 			gc.fillText(Game.levelName, 10, 15);
 			gc.fillText(Game.levelTitle, 10, 30);
-			gc.fillText("Score: " + Game.score, Game.CANVAS_WIDTH - 70, 15);
+			gc.fillText("Lives: " + Game.livesRemaining, Game.LIVESTEXT_X, 15);
+			gc.fillText("Score: " + Game.score, Game.SCORETEXT_X, 15);
 			gc.drawImage(Game.paddle.getImage(), Game.paddle.getLocX(), Game.paddle.getLocY());
 			gc.drawImage(Game.ball.getImage(), Game.ball.getLocX(), Game.ball.getLocY());
 			for( int i = 0; i < Game.activeBlocks.size(); i++ ) {
@@ -97,11 +98,10 @@ public class GUI extends Application{
 				case SPACE:
 					if(Game.gmState == Game.GameState.READY ||
 					   Game.gmState == Game.GameState.PLAYING) {
+						Game.prePausedState = Game.gmState;
 						Game.gmState = Game.GameState.PAUSED;
-						System.out.println("PAUSED");
 					} else if(Game.gmState == Game.GameState.PAUSED) {
-						Game.gmState = Game.GameState.PLAYING;
-						System.out.println("PLAYING");
+						Game.gmState = Game.prePausedState;
 					}
 					break;
 				case UP:
