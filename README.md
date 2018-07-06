@@ -8,9 +8,11 @@ Features to Add:
 3) Menu with Play/High Score Board/Options/Credits buttons
 4) High Score Board Screen
 5) Options Screen
-6) Player "Lives"
+6) Power Ups
 
 Version History
+
+V0.8) The game now has five levels, player lives, and a way to earn bonus lives.
 
 V0.7) The game now has a second level, background music, sound effects, and score!
 
