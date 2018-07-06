@@ -5,16 +5,15 @@ Features to Add:
 
 1) More dynamic reflection angle
 2) Score/Points
-3) Multiple Levels
-4) Music
-5) Sound Effects
-6) Credits Screen
-7) Menu with Play/High Score Board/Options/Credits buttons
-8) High Score Board Screen
-9) Options Screen
-10) Player "Lives"
+3) Credits Screen
+4) Menu with Play/High Score Board/Options/Credits buttons
+5) High Score Board Screen
+6) Options Screen
+7) Player "Lives"
 
 Version History
+
+V0.7) The game now has a second level, background music, and sound effects!
 
 V0.6) The game works on a very basic level. There is only one level in the game and the ball only reflects at a 90 degree angle.
 
