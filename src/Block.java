@@ -1,6 +1,7 @@
 import java.net.URL;
 
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 
 public class Block {
 
@@ -69,8 +70,30 @@ public class Block {
 	
 	public void hit() {
 		this.hp -= 1;
-		if(this.hp == 0) {
-			this.isActive = false;
+		switch(hp) {
+			case 0:
+				this.isActive = false;
+				break;
+			case 1:
+				this.url = getClass().getResource(redPath);
+				this.image = new Image(url.toString());
+				break;
+			case 2:
+				this.url = getClass().getResource(ylwPath);
+				this.image = new Image(url.toString());
+				break;
+			case 3:
+				this.url = getClass().getResource(prpPath);
+				this.image = new Image(url.toString());
+				break;
+			case 4:
+				this.url = getClass().getResource(bluPath);
+				this.image = new Image(url.toString());
+				break;
+			case 5:
+				this.url = getClass().getResource(grnPath);
+				this.image = new Image(url.toString());
+				break;
 		}
 	}
 	

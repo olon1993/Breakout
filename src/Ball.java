@@ -1,6 +1,7 @@
 import java.net.URL;
 import java.util.Random;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 
 public class Ball {
 
@@ -26,8 +27,13 @@ public class Ball {
 	
 	public Ball() {
 		random = new Random();
+	}
+	
+	public void init() {
 		this.locx = BALL_MAX_X / 2;
 		this.locy = BALL_INIT_Y;
+		this.directX = 0;
+		this.directY = 0;
 	}
 	
 	public void launch() {
@@ -49,29 +55,34 @@ public class Ball {
 		setLocY(newLocY);
 	}
 	
-	public void detectCollision() {
+	public boolean detectCollision() {
 	
 		// Check if the ball hit left or right wall boundary
 		// and reverse direction if it did
 		if(this.locx == 0){
 			directX = 1;
+			return true;
 		} else if(this.locx == BALL_MAX_X) {
 			directX = -1;
+			return true;
 		}
 		
 		// Check if the ball hit top or bottom wall boundary.
 		// Reverse direction if it hit top, game over if it hit bottom
 		if(this.locy == 0) {
 			directY = 1;
+			return true;
 		} else if(this.locy == BALL_MAX_Y) {
 			Game.gmState = Game.GameState.GAMEOVER;
 		}
 		
 		// Check if the ball hit the paddle and reverse direction if it did
-		if(this.locy > BALL_INIT_Y && this.locy < BALL_INIT_Y + Game.paddle.getPaddleHeight() &&
+		if(this.boundY > Game.paddle.getLocY() && 
+		   this.boundY < Game.paddle.getLocY() + Game.paddle.getPaddleHeight() &&
 		   this.locx > Game.paddle.getLocX() && 
 		   this.locx < Game.paddle.getLocX() + Game.paddle.getPaddleWidth()) {
 			directY = -1;
+			return true;
 		}
 	
 		// Check if the ball hit a block. If the ball hits a block the block
@@ -129,9 +140,11 @@ public class Ball {
 				}
 				
 				// Only hit one block at a time
-				break;
+				return true;
 			}
 		}
+		
+		return false;
 		
 	}
 	

@@ -5,6 +5,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.net.URL;
 
@@ -48,6 +49,8 @@ public class GUI extends Application{
 		if(Game.gmState == Game.GameState.READY || 
 		   Game.gmState == Game.GameState.PLAYING ||
 		   Game.gmState == Game.GameState.PAUSED) {
+			gc.fillText(Game.levelName, 10, 15);
+			gc.fillText(Game.levelTitle, 10, 30);
 			gc.drawImage(Game.paddle.getImage(), Game.paddle.getLocX(), Game.paddle.getLocY());
 			gc.drawImage(Game.ball.getImage(), Game.ball.getLocX(), Game.ball.getLocY());
 			for( int i = 0; i < Game.activeBlocks.size(); i++ ) {
@@ -74,6 +77,7 @@ public class GUI extends Application{
 		gcState = GraphicsState.INITIALIZED;
 		canvas = new Canvas(Game.CANVAS_WIDTH, Game.CANVAS_HEIGHT);
 		gc = canvas.getGraphicsContext2D();
+		gc.setFill(Color.WHITE);
 	}
 	
 	/*

@@ -17,6 +17,10 @@ public class Paddle {
 	private int locx, locy, direction;
 	
 	public Paddle() {
+		
+	}
+	
+	public void init() {
 		locx = PADDLE_MAX_X / 2;
 		locy = PADDLE_Y;
 	}
